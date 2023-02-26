@@ -38,7 +38,7 @@ TITLE "{album.album}"
     TITLE "{song.title}"
     INDEX 01 00:00:00\n'''
 
-    target = path.joinpath(f'{album.album}.cue')
+    target = path.joinpath(f'{album.band} - {album.album}.cue')
     if target.exists():
         if not ask_confirmation('CUE file already exists. Override?'):
             return False
