@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Optional
 
 from PySide6.QtCore import QSize, Qt, QTimer
-from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent
 from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent, QKeySequence
 from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel
 from natsort import natsorted
@@ -78,13 +77,12 @@ class VakhangyaMainWindow(QMainWindow):
     def dropEvent(self, event: QDropEvent) -> None:
         if event.mimeData().hasUrls():
             url = event.mimeData().urls()[0]
-            if url.isLocalFile():
-                event.acceptProposedAction()
-                path = Path(url.path())
-                if path.is_file():
-                    error_msg('Dropped item is not a directory', self._centralWidget)
-                    return
-                self._selectAlbum(path)
+            event.acceptProposedAction()
+            path = Path(url.path())
+            if path.is_file():
+                error_msg('Dropped item is not a directory', self._centralWidget)
+                return
+            self._selectAlbum(path)
 
     @busy
     def _selectAlbum(self, path: Optional[Path] = None):
