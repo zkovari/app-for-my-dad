@@ -1,3 +1,4 @@
+import textwrap
 from typing import List
 
 from PySide6.QtCore import Qt
@@ -44,7 +45,7 @@ class SongsEditor(QScrollArea):
         self._centralWidget.layout().addWidget(vspacer())
 
     def setSongs(self, songs: List[Song]):
-        clear_layout(self._centralWidget)
+        self.clear()
 
         for song in songs:
             wdg = SongWidget(song)
@@ -52,6 +53,9 @@ class SongsEditor(QScrollArea):
             fade_in(wdg)
 
         self._centralWidget.layout().addWidget(vspacer())
+
+    def clear(self):
+        clear_layout(self._centralWidget)
 
 
 class AlbumHeaderWidget(QWidget):
@@ -66,13 +70,11 @@ class AlbumHeaderWidget(QWidget):
         self._albumIcon = Icon('mdi.album')
 
         self._lblBand = QLabel()
-        self._lblBand.setHidden(True)
         self._lblYear = QLabel()
-        self._lblYear.setHidden(True)
         self._lblAlbum = QLabel()
-        self._lblAlbum.setHidden(True)
         for lbl in self._labels():
             incr_font(lbl, 2)
+            lbl.setHidden(True)
 
         self.layout().addWidget(self._bandIcon)
         self.layout().addWidget(self._lblBand)
@@ -83,11 +85,20 @@ class AlbumHeaderWidget(QWidget):
         self.layout().addWidget(spacer())
 
     def setAlbum(self, album: Album):
-        self._lblAlbum.setText(album.album)
+        self._lblAlbum.setText(textwrap.shorten(album.album, width=50))
+        self._lblAlbum.setToolTip(album.album)
         self._lblYear.setText(str(album.year))
-        self._lblBand.setText(album.band)
+        self._lblYear.setToolTip(str(album.year))
+        self._lblBand.setText(textwrap.shorten(album.band, width=50))
+        self._lblBand.setToolTip(album.band)
         for lbl in self._labels():
             fade_in(lbl)
+
+    def clear(self):
+        for lbl in self._labels():
+            lbl.clear()
+            lbl.setToolTip('')
+            lbl.setHidden(True)
 
     def _labels(self) -> List[QLabel]:
         return [self._lblAlbum, self._lblYear, self._lblBand]
@@ -104,6 +115,10 @@ class AlbumDisplayWidget(QFrame):
         vbox(self)
         self.layout().addWidget(self._header)
         self.layout().addWidget(self._songsContainer)
+
+    def clear(self):
+        self._header.clear()
+        self._songsContainer.clear()
 
     def setAlbum(self, album: Album):
         self._header.setAlbum(album)
