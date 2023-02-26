@@ -34,3 +34,7 @@ jobs:
     - name: Create with beeware
       run: |
         briefcase create
+    - name: Package with beeware
+      run: |
+        briefcase build
+        briefcase package
