@@ -33,7 +33,7 @@ TITLE "{album.album}"
 '''
 
     for i, song in enumerate(album.songs):
-        content += f'''FILE "{song.full_name}" WAVE"
+        content += f'''FILE "{song.full_name}" WAVE
   TRACK {i + 1} AUDIO
     TITLE "{song.title}"
     INDEX 01 00:00:00\n'''
