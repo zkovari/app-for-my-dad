@@ -1,0 +1,58 @@
+# This project was generated using template: https://github.com/beeware/briefcase-template and branch: v0.3.12
+[tool.briefcase]
+project_name = "Vakhangya"
+bundle = "com.example"
+version = "0.0.1"
+url = "https://github.com/zkovari/foobar-cue-gen-app"
+license = "GNU General Public License v3 (GPLv3)"
+author = "Zsolt"
+author_email = "zsolt@example.com"
+
+[tool.briefcase.app.vakhangya]
+formal_name = "Vakhangya"
+description = "My first application"
+icon = "src/vakhangya/resources/vakhangya"
+sources = [
+    "src/vakhangya",
+]
+test_sources = [
+    "tests",
+]
+
+requires = [
+    "pyside6~=6.2",
+]
+test_requires = [
+    "pytest",
+]
+
+[tool.briefcase.app.vakhangya.macOS]
+requires = [
+    "std-nslog~=1.0.0"
+]
+
+[tool.briefcase.app.vakhangya.linux]
+requires = []
+
+[tool.briefcase.app.vakhangya.linux.appimage]
+system_requires = []
+linuxdeploy_plugins = []
+
+[tool.briefcase.app.vakhangya.linux.flatpak]
+flatpak_runtime = "org.kde.Platform"
+flatpak_runtime_version = "6.3"
+flatpak_sdk = "org.kde.Sdk"
+
+[tool.briefcase.app.vakhangya.windows]
+requires = []
+
+# Mobile deployments
+[tool.briefcase.app.vakhangya.iOS]
+supported = false
+
+[tool.briefcase.app.vakhangya.android]
+supported = false
+
+# Web deployments
+[tool.briefcase.app.vakhangya.web]
+supported = false

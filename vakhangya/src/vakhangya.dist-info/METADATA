@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.12
+Name: vakhangya
+Formal-Name: Vakhangya
+App-ID: com.example.vakhangya
+Version: 0.0.1
+Home-page: https://github.com/zkovari/foobar-cue-gen-app
+Download-URL: https://github.com/zkovari/foobar-cue-gen-app
+Author: Zsolt
+Author-email: zsolt@example.com
+Summary: My first application
