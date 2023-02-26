@@ -38,3 +38,7 @@ jobs:
       run: |
         briefcase build
         briefcase package
+    - uses: actions/upload-artifact@v2
+      with:
+        name: app-win-artifact
+        path: windows\Vakhangya-0.0.1.msi
