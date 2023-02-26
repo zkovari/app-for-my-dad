@@ -10,7 +10,7 @@ author_email = "zsolt@example.com"
 
 [tool.briefcase.app.vakhangya]
 formal_name = "Vakhangya"
-description = "My first application"
+description = "Vakhangya application"
 icon = "src/vakhangya/resources/vakhangya"
 sources = [
     "src/vakhangya",
@@ -21,6 +21,9 @@ test_sources = [
 
 requires = [
     "pyside6~=6.2",
+    'qt-handy',
+    'qtawesome',
+    'qt-anim @ git+https://github.com/plotlyst/qt-anim.git',
 ]
 test_requires = [
     "pytest",

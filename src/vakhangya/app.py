@@ -3,6 +3,9 @@ My first application
 """
 import sys
 
+from vakhangya.view.main_window import VakhangyaMainWindow
+from vakhangya.view.stylesheet import APP_STYLESHEET
+
 try:
     from importlib import metadata as importlib_metadata
 except ImportError:
@@ -10,12 +13,6 @@ except ImportError:
     import importlib_metadata
 
 from PySide6 import QtWidgets
-
-
-class Vakhangya(QtWidgets.QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle('Vakhangya')
 
 
 def main():
@@ -36,6 +33,7 @@ def main():
     QtWidgets.QApplication.setApplicationName(metadata['Formal-Name'])
 
     app = QtWidgets.QApplication(sys.argv)
-    main_window = Vakhangya()
+    app.setStyleSheet(APP_STYLESHEET)
+    main_window = VakhangyaMainWindow()
     main_window.show()
     sys.exit(app.exec())
