@@ -15,11 +15,7 @@ from PySide6 import QtWidgets
 class Vakhangya(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.init_ui()
-
-    def init_ui(self):
-        self.setWindowTitle('vakhangya')
-        self.show()
+        self.setWindowTitle('Vakhangya')
 
 
 def main():
@@ -41,4 +37,5 @@ def main():
 
     app = QtWidgets.QApplication(sys.argv)
     main_window = Vakhangya()
+    main_window.show()
     sys.exit(app.exec())
