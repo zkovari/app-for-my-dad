@@ -24,6 +24,8 @@ requires = [
     'qt-handy',
     'qtawesome',
     'qt-anim @ git+https://github.com/plotlyst/qt-anim.git',
+    'natsort',
+    'atomicwrites',
 ]
 test_requires = [
     "pytest",
