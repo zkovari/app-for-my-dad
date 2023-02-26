@@ -3,6 +3,7 @@ from typing import Optional
 
 from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent
+from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent, QKeySequence
 from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel
 from natsort import natsorted
 from qtanim import fade_in, fade_out
@@ -43,6 +44,7 @@ class VakhangyaMainWindow(QMainWindow):
         self._btnSave.setMaximumWidth(200)
         self._btnSave.setIcon(qta_icon('fa5s.save'))
         self._btnSave.setDisabled(True)
+        self._btnSave.setShortcut(QKeySequence.StandardKey.Save)
         incr_font(self._btnSave, 6)
         self._btnSave.clicked.connect(self._saveCueFile)
 
