@@ -91,7 +91,10 @@ class VakhangyaMainWindow(QMainWindow):
         if path is None:
             folder = QFileDialog.getExistingDirectory(self._centralWidget, 'Open folder', '~',
                                                       QFileDialog.Option.ShowDirsOnly)
-            self._currentPath = Path(folder)
+            if folder:
+                self._currentPath = Path(folder)
+            else:
+                return
         else:
             self._currentPath = path
         try:
