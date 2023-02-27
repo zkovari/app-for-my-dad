@@ -3,7 +3,7 @@ from typing import Optional
 
 from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent, QKeySequence
-from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel
+from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel, QMessageBox
 from natsort import natsorted
 from qtanim import fade_in, fade_out
 from qthandy import vbox, vspacer, incr_font, busy, italic, hbox, retain_when_hidden
@@ -67,14 +67,16 @@ class VakhangyaMainWindow(QMainWindow):
 
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:
         self.raise_()
-        if event.mimeData().hasUrls():
-            event.acceptProposedAction()
+        # if event.mimeData().hasUrls():
+        event.acceptProposedAction()
 
     def dragMoveEvent(self, event: QDragMoveEvent) -> None:
-        if event.mimeData().hasUrls():
-            event.acceptProposedAction()
+        # if event.mimeData().hasUrls():
+        event.acceptProposedAction()
 
     def dropEvent(self, event: QDropEvent) -> None:
+        QMessageBox.information(self._centralWidget, 'Info', str(event.mimeData().formats()))
+        QMessageBox.information(self._centralWidget, 'Info', str(event.mimeData().data(event.mimeData().formats()[0])))
         if event.mimeData().hasUrls():
             url = event.mimeData().urls()[0]
             event.acceptProposedAction()
