@@ -1,3 +1,4 @@
+import pickle
 from pathlib import Path
 from typing import Optional
 
@@ -76,7 +77,9 @@ class VakhangyaMainWindow(QMainWindow):
 
     def dropEvent(self, event: QDropEvent) -> None:
         QMessageBox.information(self._centralWidget, 'Info', str(event.mimeData().formats()))
-        QMessageBox.information(self._centralWidget, 'Info', str(event.mimeData().data(event.mimeData().formats()[0])))
+        data = pickle.loads(event.mimeData().data(event.mimeData().formats()[0]))
+        QMessageBox.information(self._centralWidget, 'Info', str(data))
+
         if event.mimeData().hasUrls():
             url = event.mimeData().urls()[0]
             event.acceptProposedAction()
