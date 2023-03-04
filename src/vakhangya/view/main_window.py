@@ -1,10 +1,9 @@
-import pickle
 from pathlib import Path
 from typing import Optional
 
 from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent, QKeySequence
-from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel, QMessageBox
+from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel
 from natsort import natsorted
 from qtanim import fade_in, fade_out
 from qthandy import vbox, vspacer, incr_font, busy, italic, hbox, retain_when_hidden
@@ -67,26 +66,22 @@ class VakhangyaMainWindow(QMainWindow):
         self._centralWidget.layout().addWidget(btnWidget, alignment=Qt.AlignmentFlag.AlignRight)
 
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:
-        self.raise_()
-        # if event.mimeData().hasUrls():
-        event.acceptProposedAction()
+        self.activateWindow()
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
 
     def dragMoveEvent(self, event: QDragMoveEvent) -> None:
-        # if event.mimeData().hasUrls():
-        event.acceptProposedAction()
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
 
     def dropEvent(self, event: QDropEvent) -> None:
-        QMessageBox.information(self._centralWidget, 'Info', str(event.mimeData().formats()))
-        data = pickle.loads(event.mimeData().data(event.mimeData().formats()[0]))
-        QMessageBox.information(self._centralWidget, 'Info', str(data))
-
         if event.mimeData().hasUrls():
             url = event.mimeData().urls()[0]
-            event.acceptProposedAction()
-            path = Path(url.path())
+            path = Path(url.path().removeprefix('/'))
             if path.is_file():
                 error_msg('Dropped item is not a directory', self._centralWidget)
                 return
+            event.acceptProposedAction()
             self._selectAlbum(path)
 
     @busy
