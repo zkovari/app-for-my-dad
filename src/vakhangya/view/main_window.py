@@ -2,11 +2,11 @@ from pathlib import Path
 from typing import Optional
 
 from PySide6.QtCore import QSize, Qt, QTimer
-from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent, QKeySequence
-from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel
+from PySide6.QtGui import QDragEnterEvent, QDropEvent, QDragMoveEvent, QKeySequence, QAction
+from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QFileDialog, QLabel, QToolBar
 from natsort import natsorted
 from qtanim import fade_in, fade_out
-from qthandy import vbox, vspacer, incr_font, busy, italic, hbox, retain_when_hidden
+from qthandy import vbox, vspacer, incr_font, busy, italic, hbox, retain_when_hidden, margins, spacer
 
 from vakhangya.view.browser import AlbumDisplayWidget
 from vakhangya.view.common import qta_icon, error_msg
@@ -22,13 +22,13 @@ class VakhangyaMainWindow(QMainWindow):
         self._centralWidget = QWidget()
         self.setCentralWidget(self._centralWidget)
         self.setAcceptDrops(True)
-        self.setContentsMargins(40, 20, 40, 40)
         self.resize(640, 400)
 
         self._currentAlbum: Optional[Album] = None
         self._currentPath: Optional[Path] = None
 
         vbox(self._centralWidget)
+        margins(self._centralWidget, 40, 20, 40, 20)
 
         self._btnOpenFolder = QPushButton('')
         self._btnOpenFolder.setIconSize(QSize(22, 22))
@@ -65,6 +65,17 @@ class VakhangyaMainWindow(QMainWindow):
         btnWidget.layout().addWidget(self._btnSave)
         self._centralWidget.layout().addWidget(btnWidget, alignment=Qt.AlignmentFlag.AlignRight)
 
+        self._toolbar = QToolBar()
+        self._toolbar.setContextMenuPolicy(Qt.ContextMenuPolicy.PreventContextMenu)
+        self._toolbar.setFloatable(False)
+        self._toolbar.addWidget(spacer())
+        remain_on_top_action = QAction(qta_icon('mdi.dock-window'), '', self._toolbar)
+        remain_on_top_action.setToolTip('Stay on top')
+        remain_on_top_action.setCheckable(True)
+        remain_on_top_action.toggled.connect(self._toggleStayingOnTop)
+        self._toolbar.addAction(remain_on_top_action)
+        self.addToolBar(self._toolbar)
+
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:
         self.activateWindow()
         if event.mimeData().hasUrls():
@@ -83,6 +94,10 @@ class VakhangyaMainWindow(QMainWindow):
                 return
             event.acceptProposedAction()
             self._selectAlbum(path)
+
+    def _toggleStayingOnTop(self, toggled: bool):
+        self.setWindowFlag(Qt.WindowStaysOnTopHint, toggled)
+        self.show()
 
     @busy
     def _selectAlbum(self, path: Optional[Path] = None):

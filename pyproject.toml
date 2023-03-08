@@ -2,8 +2,8 @@
 [tool.briefcase]
 project_name = "Vakhangya"
 bundle = "com.example"
-version = "0.0.1"
-url = "https://github.com/zkovari/foobar-cue-gen-app"
+version = "0.1.0"
+url = "https://github.com/zkovari/app-for-my-dad"
 license = "GNU General Public License v3 (GPLv3)"
 author = "Zsolt"
 author_email = "zsolt@example.com"
