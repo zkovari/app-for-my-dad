@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 from typing import List
 
@@ -34,7 +35,7 @@ TITLE "{album.album}"
     for i, song in enumerate(album.songs):
         content += f'''FILE "{song.full_name}" WAVE
   TRACK {i + 1} AUDIO
-    TITLE "{song.title}"
+    TITLE "{_remove_number_suffix(song.title)}"
     INDEX 01 00:00:00\n'''
 
     target = path.joinpath(f'{album.band} - {album.album}.cue')
@@ -42,3 +43,7 @@ TITLE "{album.album}"
         f.write(content)
 
     return True
+
+
+def _remove_number_suffix(value: str) -> str:
+    return re.sub('^([0-9]|_|\\.)*\\s?', '', value.lstrip())
