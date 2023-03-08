@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import List
 
 from atomicwrites import atomic_write
-from qthandy import ask_confirmation
 
 from vakhangya.view.domain import Album, Song
 
@@ -39,9 +38,6 @@ TITLE "{album.album}"
     INDEX 01 00:00:00\n'''
 
     target = path.joinpath(f'{album.band} - {album.album}.cue')
-    if target.exists():
-        if not ask_confirmation('CUE file already exists. Override?'):
-            return False
     with atomic_write(target, overwrite=True) as f:
         f.write(content)
 

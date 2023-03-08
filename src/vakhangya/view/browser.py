@@ -1,10 +1,10 @@
 import textwrap
-from typing import List
+from typing import List, Optional
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QToolButton, QLabel, QFrame, QWidget, QScrollArea, QLineEdit, QSizePolicy
 from qtanim import fade_in
-from qthandy import transparent, hbox, spacer, incr_font, margins, vbox, vspacer, clear_layout
+from qthandy import transparent, hbox, spacer, incr_font, margins, vbox, vspacer, clear_layout, vline
 
 from vakhangya.view.common import qta_icon
 from vakhangya.view.domain import Album, Song
@@ -62,6 +62,7 @@ class SongsEditor(QScrollArea):
 class AlbumHeaderWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._album: Optional[Album] = None
 
         hbox(self, spacing=2)
         margins(self, left=5)
@@ -69,6 +70,7 @@ class AlbumHeaderWidget(QWidget):
         self._bandIcon = Icon('fa5s.guitar')
         self._yearIcon = Icon('fa5.calendar-alt')
         self._albumIcon = Icon('mdi.album')
+        self._genreIcon = Icon('fa5s.tag')
 
         self._lblBand = QLabel()
         self._lblYear = QLabel()
@@ -76,6 +78,10 @@ class AlbumHeaderWidget(QWidget):
         for lbl in self._labels():
             incr_font(lbl, 2)
             lbl.setHidden(True)
+        self._genreEditor = QLineEdit()
+        self._genreEditor.setPlaceholderText('Genre')
+        self._genreEditor.setHidden(True)
+        self._genreEditor.textEdited.connect(self._genreEdited)
 
         self.layout().addWidget(self._bandIcon)
         self.layout().addWidget(self._lblBand)
@@ -83,17 +89,24 @@ class AlbumHeaderWidget(QWidget):
         self.layout().addWidget(self._lblYear)
         self.layout().addWidget(self._albumIcon)
         self.layout().addWidget(self._lblAlbum)
+        self.layout().addWidget(vline())
+        self.layout().addWidget(self._genreIcon)
+        self.layout().addWidget(self._genreEditor)
         self.layout().addWidget(spacer())
 
     def setAlbum(self, album: Album):
+        self._album = album
+
         self._lblAlbum.setText(textwrap.shorten(album.album, width=50))
         self._lblAlbum.setToolTip(album.album)
         self._lblYear.setText(str(album.year))
         self._lblYear.setToolTip(str(album.year))
         self._lblBand.setText(textwrap.shorten(album.band, width=50))
         self._lblBand.setToolTip(album.band)
+        self._genreEditor.setText(album.genre)
         for lbl in self._labels():
             fade_in(lbl)
+        fade_in(self._genreEditor)
 
     def clear(self):
         for lbl in self._labels():
@@ -103,6 +116,10 @@ class AlbumHeaderWidget(QWidget):
 
     def _labels(self) -> List[QLabel]:
         return [self._lblAlbum, self._lblYear, self._lblBand]
+
+    def _genreEdited(self, text: str):
+        if self._album is not None:
+            self._album.genre = text
 
 
 class AlbumDisplayWidget(QFrame):
