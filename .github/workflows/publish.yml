@@ -31,18 +31,5 @@ jobs:
           briefcase package
       - uses: actions/upload-artifact@v2
         with:
-          name: app-win-artifact
+          name: vakhangya-app
           path: windows\Vakhangya-0.1.0.msi
-      - name: Get Release
-        uses: bruceadams/get-release@v1.3.2
-        id: get_release
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Upload Release Asset
-        uses: shogo82148/actions-upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: windows\Vakhangya-0.1.0.msi
