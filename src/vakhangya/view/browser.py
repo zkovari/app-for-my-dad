@@ -25,6 +25,7 @@ class SongWidget(QWidget):
         hbox(self)
         self._lineTitle = QLineEdit(self)
         self._lineTitle.setText(self._song.title)
+        self._lineTitle.setReadOnly(True)
         self.layout().addWidget(self._lineTitle)
 
 
